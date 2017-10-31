@@ -1,2 +1,10 @@
 # GifTastic
-Week 6 Giphy homework assignment
+
+// By Charles Bowden
+// Week 6 UNC Coding Bootcamp
+
+// Following are directions from assignment
+
+### Overview
+
+In this assignment, you'll use the GIPHY API to make a dynamic web page that populates with gifs of your choice. To finish this task, you must call the GIPHY API and use JavaScript and jQuery to change the HTML of your site.
