@@ -8,20 +8,30 @@ var topics = ["Ducktales", "He-Man", "Transformers", "Batman Animated Series", "
 
 function displayTopicInfo() {
 	var cartoon = $(this).attr("data-name");
-	var queryURL = "'http://api.giphy.com/v1/gifs/search?api_key=JbAze3Bq2K81GsPhzV1gSBiyZyA2vR38+q="+ cartoon + "+limit=10";
+	var queryURL = "https://api.giphy.com/v1/gifs/search?api_key=JbAze3Bq2K81GsPhzV1gSBiyZyA2vR38&q=" + cartoon + "&limit=10&offset=0&rating=PG-13&lang=en";
 
 	$.ajax({
 		url: queryURL, 
 		method: "GET"
 	}).done(function(response) {
+
+		// Create For Loop here to show multiple Giphy Responses
 		//Creating a Div for Topic
 		var topicDiv = $("<div class='topic'>");
-		// Storing the rating data
-		var rating = response.Rating;
-		// Element for rating
+		// Storing the rating data in variable
+		var rating = response.data[0].rating;
+		// Creating Element to display rating 
 		var pRate = $("<p>").text("Rating: " + rating);
-		// Displaying the rating
+		// Adding Rating to Topic Div
 		topicDiv.append(pRate);
+		// Variable to hold still image from from Giphy
+		var giphyImgStill = response.data[0].images.original_still.url;
+		// Create Image Element
+		var image = $("<img>").attr("src", giphyImgStill);
+		// Appending the Image
+		topicDiv.append(image);
+		// Write Topic Div to HTML document
+		$("#cartoons").prepend(topicDiv);
 	})
 }
 
