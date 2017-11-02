@@ -4,11 +4,11 @@
 // Giphy API Key JbAze3Bq2K81GsPhzV1gSBiyZyA2vR38
 
 // Array of Topics to use for Buttons
-var topics = ["Scrooge McDuck", "He-Man", "Optimus Prime", "Batman", "Spiderman", "Animaniacs", "Gummi Bears", "Papa Smurf"]
+var topics = ["Superman", "Batman", "Green Lantern", "Aquaman", "Wonder Woman", "Cyborg", "Green Arrow", "The Flash"]
 
 function displayTopicInfo() {
-	var cartoon = $(this).attr("data-name");
-	var queryURL = "https://api.giphy.com/v1/gifs/search?api_key=JbAze3Bq2K81GsPhzV1gSBiyZyA2vR38&q=" + cartoon + "&limit=10&offset=0&rating=PG-13&lang=en";
+	var superHeroes = $(this).attr("data-name");
+	var queryURL = "https://api.giphy.com/v1/gifs/search?api_key=JbAze3Bq2K81GsPhzV1gSBiyZyA2vR38&q=" + superHeroes + "&limit=10&offset=0&rating=PG-13&lang=en";
 
 	$.ajax({
 		url: queryURL, 
@@ -43,7 +43,7 @@ function displayTopicInfo() {
 		//Give images a class
 		image.addClass("giphyImages");
 		// Appending the Image
-		topicDiv.append(image);
+		topicDiv.prepend(image);
 		// Write Topic Div to HTML document
 		$("#cartoons").prepend(topicDiv);
 		}
@@ -60,8 +60,12 @@ function renderButtons() {
 		var a = $("<button>");
 		// Adding a class of Topic to our Button
 		a.addClass("topic");
+		// Adding a class for styling
+		a.addClass("btn btn-lg");
 		// Adding a data-attribute
 		a.attr("data-name", topics[i]);
+		// adding attr for Bootstrap
+		a.attr("type", "button");
 		// Button Text
 		a.text(topics[i]);
 		// Adding the Button to the Buttons Div
@@ -76,7 +80,8 @@ $("#addCartoon").on("click", function(event) {
     var topic = $("#cartoon-input").val().trim();
     // Adding movie from the textbox to our array
     topics.push(topic);
-
+    // Clear the form field for next addition
+    $("form").trigger("reset")
 	// Calling renderButtons which handles the processing of our movie array
     renderButtons();
     });
