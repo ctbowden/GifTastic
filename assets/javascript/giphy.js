@@ -4,7 +4,7 @@
 // Giphy API Key JbAze3Bq2K81GsPhzV1gSBiyZyA2vR38
 
 // Array of Topics to use for Buttons
-var topics = ["Ducktales", "He-Man", "Transformers", "Batman Animated Series", "Rescue Rangers", "Animaniacs", "Gummi Bears", "Dungeons and Dragons"]
+var topics = ["Scrooge McDuck", "He-Man", "Optimus Prime", "Batman", "Spiderman", "Animaniacs", "Gummi Bears", "Papa Smurf"]
 
 function displayTopicInfo() {
 	var cartoon = $(this).attr("data-name");
@@ -14,12 +14,15 @@ function displayTopicInfo() {
 		url: queryURL, 
 		method: "GET"
 	}).done(function(response) {
-
+		//sets the Length for the next loop
+		var results = response.data;
+		//Clear Previous images
+		$("#cartoons").empty();
 		// Create For Loop here to show multiple Giphy Responses
-		for (var i = 0; i < 10; i++) {
+		for (var i = 0; i < results.length; i++) {
 		
 		//Creating a Div for Topic
-		var topicDiv = $("<div class='gif'>");
+		var topicDiv = $("<div class='heroes'>");
 		// Storing the rating data in variable
 		var rating = response.data[i].rating;
 		// Creating Element to display rating 
@@ -29,13 +32,16 @@ function displayTopicInfo() {
 		// Variable to hold still image from from Giphy
 		var giphyImgStill = response.data[i].images.downsized_still.url;
 		// Variable to hold motion image from Giphy
-		var giphyImgMotion = response.data[i].images.original.mp4;
+		var giphyImgMotion = response.data[i].images.downsized.url;
 		// Create Image Element
-		var image = $("<img>").attr("src", giphyImgMotion);
+		var image = $("<img>").attr("src", giphyImgStill);
 		//update image with more attributes
 		image.attr("data-still", giphyImgStill);
 		image.attr("data-animate", giphyImgMotion);
 		image.attr("data-state", "still");
+		image.attr("id", "img"+i)
+		//Give images a class
+		image.addClass("giphyImages");
 		// Appending the Image
 		topicDiv.append(image);
 		// Write Topic Div to HTML document
@@ -75,29 +81,32 @@ $("#addCartoon").on("click", function(event) {
     renderButtons();
     });
 
-// Adding a click event listener to all elements with a class of "movie"
+// Adding a click event listener to all elements with a class of "topic"
 $(document).on("click", ".topic", displayTopicInfo);
 // Calling the renderButtons function to display the intial buttons
 renderButtons();
 
 
 
+// Add a listener for all elements with class of "gif"
+$(document).on("click", ".giphyImages", flipAnimate);
 
 
 
-// Code to animate images follows, will need to format images as shown in example to use this code
-// <img src="https://media3.giphy.com/media/W6LbnBigDe4ZG/200_s.gif" data-still="https://media3.giphy.com/media/W6LbnBigDe4ZG/200_s.gif" data-animate="https://media3.giphy.com/media/W6LbnBigDe4ZG/200.gif" data-state="still" class="gif">
-$(".gif").on("click", function() {
-      // The attr jQuery method allows us to get or set the value of any attribute on our HTML element
-      var state = $(this).attr("data-state");
-      // If the clicked image's state is still, update its src attribute to what its data-animate value is.
-      // Then, set the image's data-state to animate
-      // Else set src to the data-still value
-      if (state === "still") {
-        $(this).attr("src", $(this).attr("data-animate"));
-        $(this).attr("data-state", "animate");
+function flipAnimate() {
+	var item = $(this).attr("id");
+	item = "#"+item;
+	// console.log(item);
+	var state = $(item).attr("data-state");
+	// console.log(state);
+	if (state === "still") {
+        $(item).attr("src", $(item).attr("data-animate"));
+        $(item).attr("data-state", "animate");
+        // console.log(this);
       } else {
-        $(this).attr("src", $(this).attr("data-still"));
-        $(this).attr("data-state", "still");
-      }
-    });
+        $(item).attr("src", $(item).attr("data-still"));
+        $(item).attr("data-state", "still");
+        // console.log(this);
+      };
+};
+
