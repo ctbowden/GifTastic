@@ -16,22 +16,31 @@ function displayTopicInfo() {
 	}).done(function(response) {
 
 		// Create For Loop here to show multiple Giphy Responses
+		for (var i = 0; i < 10; i++) {
+		
 		//Creating a Div for Topic
-		var topicDiv = $("<div class='topic'>");
+		var topicDiv = $("<div class='gif'>");
 		// Storing the rating data in variable
-		var rating = response.data[0].rating;
+		var rating = response.data[i].rating;
 		// Creating Element to display rating 
 		var pRate = $("<p>").text("Rating: " + rating);
 		// Adding Rating to Topic Div
 		topicDiv.append(pRate);
 		// Variable to hold still image from from Giphy
-		var giphyImgStill = response.data[0].images.original_still.url;
+		var giphyImgStill = response.data[i].images.downsized_still.url;
+		// Variable to hold motion image from Giphy
+		var giphyImgMotion = response.data[i].images.original.mp4;
 		// Create Image Element
-		var image = $("<img>").attr("src", giphyImgStill);
+		var image = $("<img>").attr("src", giphyImgMotion);
+		//update image with more attributes
+		image.attr("data-still", giphyImgStill);
+		image.attr("data-animate", giphyImgMotion);
+		image.attr("data-state", "still");
 		// Appending the Image
 		topicDiv.append(image);
 		// Write Topic Div to HTML document
 		$("#cartoons").prepend(topicDiv);
+		}
 	})
 }
 
